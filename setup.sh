@@ -10,7 +10,7 @@ mkdir -p     "${HOME}/.vim/autoload" "${HOME}/.vim/bundle"
 
 echo "Installing Pathogen..."
 # download Pathogen
-curl -LSso   "${HOME}/.vim/autoload/pathogen.vim" 'https://tpo.pe/pathogen.vim' &
+curl -LSso   "${HOME}/.vim/autoload/pathogen.vim" 'https://tpo.pe/pathogen.vim'
 
 cd  "${HOME}/.vim/bundle"
 
