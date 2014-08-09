@@ -8,7 +8,6 @@ syntax on
 
 set ai                      " Auto indent
 set ruler                   " Show the cursor position; always.
-set incsearch               " Incremental search, don't wait for enter key before searching.
 set nomodeline              " modeline might compromise the system, I don't need it anyways.
 set nocompatible            " Vi is nice, but I preffer VIM.
 set showcmd                 " Show current (partial) command.
