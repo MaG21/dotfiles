@@ -7,14 +7,18 @@ filetype plugin indent on
 syntax on
 
 set ai                      " Auto indent
-set bs=2                    " backspacing over everything in insertmode.
 set ruler                   " Show the cursor position; always.
+set incsearch               " Incremental search, don't wait for enter key before searching.
+set nomodeline              " modeline might compromise the system, I don't need it anyways.
 set nocompatible            " Vi is nice, but I preffer VIM.
-set nomodeline              " modeline might comprimise the system, I don't need it anyways.
-set history=50              " keep 50 lines of command history.
+set showcmd                 " Show current (partial) command.
+set wildmenu                " command autocomplete menu.
+
+set bs=2                    " backspacing over everything in insertmode.
 set viminfo='20,\"500       " keep a .viminfo file.
-set showcmd
+set history=91              " keep 91 lines of command history.
 set shortmess+=I            " Do no display the default initial text.
+set fileformats+=mac        " Mac eol
 
 " log and backup files, they are supposed to hold information,
 " this information, represent something from the past, usually
@@ -37,11 +41,11 @@ endif
 
 " Status
 set statusline=2
-set laststatus=2    " Show bottom status
+set laststatus=2    " Show bottom status.
 
 " Space
 set nowrap          " Do no wrap lines.
-set noexpandtab     " Do not use space for indentation! 
+set noexpandtab     " Do not use space for indentation!
 
 " Search
 set hlsearch        " Highlight search.
