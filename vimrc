@@ -18,6 +18,7 @@ set viminfo='20,\"500       " keep a .viminfo file.
 set history=91              " keep 91 lines of command history.
 set shortmess+=I            " Do no display the default initial text.
 set fileformats+=mac        " Mac eol
+set omnifunc=syntaxcomplete#Complete
 
 " log and backup files, they are supposed to hold information,
 " this information, represent something from the past, usually
