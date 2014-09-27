@@ -12,6 +12,7 @@ set nomodeline              " modeline might compromise the system, I don't need
 set nocompatible            " Vi is nice, but I preffer VIM.
 set showcmd                 " Show current (partial) command.
 set wildmenu                " command autocomplete menu.
+set hidden                  " Keep the buffer's history.
 
 set bs=2                    " backspacing over everything in insertmode.
 set viminfo='20,\"500       " keep a .viminfo file.
