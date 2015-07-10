@@ -85,6 +85,20 @@ map ¬ <Right>
 execute pathogen#infect()
 Helptags                    " Load plugins documentation.
 
+
+" CtrlP
+" ------
+
+let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
+      \ --ignore .git
+      \ --ignore .svn
+      \ --ignore .hg
+      \ --ignore .keep
+      \ --ignore .DS_Store
+      \ --ignore "**/*.pyc"
+      \ -g ""'
+
+
 " vim-airline
 " -----------
 " URL: https://github.com/bling/vim-airline
