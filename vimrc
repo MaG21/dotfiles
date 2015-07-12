@@ -29,6 +29,10 @@ autocmd BufRead,BufNewFile *.~    set nomodifiable
 autocmd BufRead,BufNewFile *.bak  set nomodifiable
 autocmd BufRead,BufNewFile *.back set nomodifiable
 
+" Interpret Makefile.inc as a Makefile
+au BufRead,BufNewFile Makefile.inc setfiletype make
+au BufRead,BufNewFile makefile.inc setfiletype make
+
 if &t_Co < 255
 	" Force 255 colors, I don't care!.
 	set t_Co=255
