@@ -8,7 +8,7 @@ echo "Installing plugins..."
 
 mkdir -p     "${HOME}/.vim/autoload" "${HOME}/.vim/bundle"
 
-if type curl 2>/dev/null; then
+if ! type curl &>/dev/null; then
 	if [ "$(uname)" == "Darwin" ]; then
 		brew install --quiet curl
 	elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
@@ -27,12 +27,25 @@ git clone 'https://github.com/bling/vim-airline.git'
 echo "Installing ctrlp.vim..."
 git clone 'https://github.com/kien/ctrlp.vim.git'
 
-if type ag 2>/dev/null; then
+if ! type ag &> /dev/null; then
+	echo "Installing ag..."
         if [ "$(uname)" == "Darwin" ]; then
+		if ! type brew; then
+			echo "brew needs to be installed in order to proceed."
+			exit 1
+		fi
+
 		brew install --quiet the_silver_searcher
-        elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+	elif type apt-get &> /dev/null; then
 		sudo apt-get install silversearcher-ag -q=2
-        fi
+	elif type yum &> /dev/null; then
+		sudo yum install the_silver_searcher --quiet
+	else
+		echo -e "\nNOTE:\nCan't dermine the system. Ag was not installed"
+		echo "You won't be able to use the plugin CtrlP correctly, unless"
+		echo "you change your ~/.vimrc and remove the part that uses ag."
+		exit 1
+	fi
 fi
 
 echo "done."
