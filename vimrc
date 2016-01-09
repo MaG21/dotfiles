@@ -33,6 +33,9 @@ autocmd BufRead,BufNewFile *.back set nomodifiable
 au BufRead,BufNewFile Makefile.inc setfiletype make
 au BufRead,BufNewFile makefile.inc setfiletype make
 
+" Change indentation for Haskell, use space instead of tabs :(
+autocmd Filetype haskell setlocal tabstop=8 shiftwidth=8 expandtab
+
 if &t_Co < 255
 	" Force 255 colors, I don't care!.
 	set t_Co=255
