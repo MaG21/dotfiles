@@ -2,17 +2,23 @@
 #
 
 echo "Copying configuration file for Vim"
-cp "./vimrc" "${HOME}/.vimrc"
+
+cp "./vimrc"     "${HOME}/.vimrc"
+
+echo "Copying syntax files"
+mkdir -p         "${HOME}/.vim/autoload" "${HOME}/.vim/bundle"
+cp -r "./syntax" "${HOME}/.vim/"
 
 echo "Installing plugins..."
 
-mkdir -p     "${HOME}/.vim/autoload" "${HOME}/.vim/bundle"
-
 if ! type curl &>/dev/null; then
+	echo "Warning, curl is not present..."
+	echo "trying to install curl..."
+
 	if [ "$(uname)" == "Darwin" ]; then
 		brew install --quiet curl
 	elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
-		sudo apt-get install curl -q=2
+		sudo apt-get install curl -q=2 -y
 	fi
 fi
 
