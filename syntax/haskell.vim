@@ -60,7 +60,6 @@ syn match hsConSym "`\(\<[A-Z][a-zA-Z0-9_']*\.\)\=[A-Z][a-zA-Z0-9_']*`"
 
 " Toplevel Template Haskell support
 "sy match hsTHTopLevel "^[a-z]\(\(.\&[^=]\)\|\(\n[^a-zA-Z0-9]\)\)*"
-sy match hsTHIDTopLevel "^[a-z]\S*" 
 sy match hsTHTopLevel "^\$(\?" nextgroup=hsTHTopLevelName 
 sy match hsTHTopLevelName "[a-z]\S*" contained
 
