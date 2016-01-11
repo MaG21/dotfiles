@@ -105,7 +105,7 @@ sy keyword hsConditional if then else
 sy match hsType "\<[A-Z]\(\S\&[^,.]\)*\>"
 
 " Boolean constants from the standard prelude.
-syn keyword hsBoolean True False
+syn keyword hsBoolean True False otherwise
 " Other constants, also from the prelude.
 syn keyword hsConstant LT GT EQ Nothing Just Left Right
 
