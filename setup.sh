@@ -54,5 +54,9 @@ if ! type ag &> /dev/null; then
 	fi
 fi
 
+echo "Installing fugitive.vim ..."
+git clone git://github.com/tpope/vim-fugitive.git
+vim -u NONE -c "helptags vim-fugitive/doc" -c q  # generate doc
+
 echo "done."
 
