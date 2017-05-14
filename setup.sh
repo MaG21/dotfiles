@@ -1,6 +1,21 @@
 #!/bin/bash
 #
 
+echo "Setup bash profile..."
+cp bash_profile ~/.bash_profile
+cp git/git-prompt.sh ~/.git-prompt.sh
+
+echo "Setup readline inputrc..."
+cp inputrc .inputrc
+
+echo "Installing Utilities..."
+
+if [ "$(uname)" == "Darwin" ]; then
+	brew install --quiet tree
+elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+	sudo apt-get install tree -q=2 -y
+fi
+
 echo "Copying configuration file for Vim"
 
 cp "./vimrc"     "${HOME}/.vimrc"
@@ -32,6 +47,19 @@ git clone 'https://github.com/bling/vim-airline.git'
 
 echo "Installing ctrlp.vim..."
 git clone 'https://github.com/kien/ctrlp.vim.git'
+
+echo "Installing vim-surround..."
+git clone git://github.com/tpope/vim-surround.git
+
+echo "Installing vim-javascript..."
+git clone https://github.com/pangloss/vim-javascript.git
+
+# This plugin highlight trailing white spaces
+echo "Installing vim-better-whitespace..."
+git clone git@github.com:ntpeters/vim-better-whitespace.git
+
+echo "Installing vim plugin winresizer..."
+git clone git@github.com:simeji/winresizer.git
 
 if ! type ag &> /dev/null; then
 	echo "Installing ag..."
