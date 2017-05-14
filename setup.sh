@@ -1,6 +1,13 @@
 #!/bin/bash
 #
 
+if [ "$(uname)" == "Darwin" ]; then
+	if ! type brew; then
+		echo "brew needs to be installed in order to proceed."
+		exit 1
+	fi
+fi
+
 echo "Setup bash profile..."
 cp bash_profile ~/.bash_profile
 cp git/git-prompt.sh ~/.git-prompt.sh
@@ -13,6 +20,9 @@ echo "Installing Utilities..."
 
 if [ "$(uname)" == "Darwin" ]; then
 	brew install --quiet tree
+	brew install --quite wget
+elif type yum &> /dev/null; then
+	sudo yum install tree --quiet
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
 	sudo apt-get install tree -q=2 -y
 fi
@@ -33,6 +43,8 @@ if ! type curl &>/dev/null; then
 
 	if [ "$(uname)" == "Darwin" ]; then
 		brew install --quiet curl
+	elif type yum &> /dev/null; then
+		sudo yum install curl --quiet
 	elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
 		sudo apt-get install curl -q=2 -y
 	fi
@@ -50,26 +62,21 @@ echo "Installing ctrlp.vim..."
 git clone 'https://github.com/kien/ctrlp.vim.git'
 
 echo "Installing vim-surround..."
-git clone git://github.com/tpope/vim-surround.git
+git clone 'git://github.com/tpope/vim-surround.git'
 
 echo "Installing vim-javascript..."
-git clone https://github.com/pangloss/vim-javascript.git
+git clone 'https://github.com/pangloss/vim-javascript.git'
 
 # This plugin highlight trailing white spaces
 echo "Installing vim-better-whitespace..."
-git clone git@github.com:ntpeters/vim-better-whitespace.git
+git clone 'git://github.com/ntpeters/vim-better-whitespace.git'
 
 echo "Installing vim plugin winresizer..."
-git clone git@github.com:simeji/winresizer.git
+git clone 'https://github.com/simeji/winresizer.git'
 
 if ! type ag &> /dev/null; then
 	echo "Installing ag..."
         if [ "$(uname)" == "Darwin" ]; then
-		if ! type brew; then
-			echo "brew needs to be installed in order to proceed."
-			exit 1
-		fi
-
 		brew install --quiet the_silver_searcher
 	elif type apt-get &> /dev/null; then
 		sudo apt-get install silversearcher-ag -q=2
