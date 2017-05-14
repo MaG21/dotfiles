@@ -69,20 +69,6 @@ set smartcase       " case sensitive search if a capitar letter is present.
 nmap <CR> o<ESC>k
 nmap <SPACE> O<ESC>j
 
-"MAC SPECIFIC MAPS
-" exit edition mode alt+[h,j,k,l]
-imap ˙ <ESC><Left>
-imap ∆ <ESC><Down>
-imap ˚ <ESC><Up>
-imap ¬ <ESC><Right>
-
-" Allow alt to be pressed along with h, j, k, and l
-map ˙ <Left>
-map ∆ <Down>
-map ˚ <Up>
-map ¬ <Right>
-
-
 "        ------- cut here -----
 
 
