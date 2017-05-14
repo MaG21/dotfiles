@@ -4,6 +4,7 @@
 echo "Setup bash profile..."
 cp bash_profile ~/.bash_profile
 cp git/git-prompt.sh ~/.git-prompt.sh
+source ~/.bash_profile
 
 echo "Setup readline inputrc..."
 cp inputrc .inputrc
