@@ -14,6 +14,10 @@ set showcmd                 " Show current (partial) command.
 set wildmenu                " command autocomplete menu.
 set hidden                  " Keep the buffer's history.
 
+set visualbell              " use visual bell instead of beeping
+set ttyfast                 " indicates a fast terminal connection
+set autoread                " Reload files changed outside vim
+
 set bs=2                    " backspacing over everything in insertmode.
 set viminfo='20,\"500       " keep a .viminfo file.
 set history=91              " keep 91 lines of command history.
@@ -61,6 +65,10 @@ set incsearch       " Incremental search.
 set ignorecase      " case insensitive search.
 set smartcase       " case sensitive search if a capitar letter is present.
 
+"MAPS
+nmap <CR> o<ESC>k
+nmap <SPACE> O<ESC>j
+
 "MAC SPECIFIC MAPS
 " exit edition mode alt+[h,j,k,l]
 imap ˙ <ESC><Left>
@@ -101,6 +109,7 @@ let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
       \ --ignore .svn
       \ --ignore .hg
       \ --ignore .keep
+      \ --ignore node_modules
       \ --ignore .DS_Store
       \ --ignore "**/*.pyc"
       \ -g ""'
