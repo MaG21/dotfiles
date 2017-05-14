@@ -7,7 +7,7 @@ cp git/git-prompt.sh ~/.git-prompt.sh
 source ~/.bash_profile
 
 echo "Setup readline inputrc..."
-cp inputrc .inputrc
+cp inputrc ~/.inputrc
 
 echo "Installing Utilities..."
 
