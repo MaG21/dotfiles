@@ -1,5 +1,4 @@
-This repository represents a minimal environment of a unix-like environment
-set to my preferences.
+This repository represents a minimal environment set to my preferences.
 
 In order to automate the installation process, one could execute the setup
 script to download and install the necessary plugins on a unix-like
