@@ -35,6 +35,10 @@ echo "Copying syntax files"
 mkdir -p         "${HOME}/.vim/autoload" "${HOME}/.vim/bundle"
 cp -r "./syntax" "${HOME}/.vim/"
 
+echo "Copying colors files"
+mkdir -p         "${HOME}/.vim/colors"
+cp "./colors/basic-dark.vim" "${HOME}/.vim/colors"
+
 echo "Installing plugins..."
 
 if ! type curl &>/dev/null; then
