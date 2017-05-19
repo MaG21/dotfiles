@@ -50,6 +50,12 @@ if v:version >= 700
 	set numberwidth=3
 endif
 
+if has("gui_running")
+	imap <S-CR> <Esc>
+	nmap <S-CR> <Esc>
+	colorscheme basic-dark
+endif
+
 
 " Status
 set statusline=2
