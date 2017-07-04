@@ -41,7 +41,7 @@ au BufRead,BufNewFile makefile.inc setfiletype make
 autocmd Filetype haskell setlocal tabstop=8 shiftwidth=8 expandtab
 
 if &t_Co < 255
-	" Force 255 colors, I don't care!.
+	" Force 255 colors, I don't care!
 	set t_Co=255
 endif
 
@@ -72,8 +72,15 @@ set ignorecase      " case insensitive search.
 set smartcase       " case sensitive search if a capitar letter is present.
 
 "MAPS
-nmap <CR> o<ESC>k
-nmap <SPACE> O<ESC>j
+nnoremap <CR> m`o<ESC>``
+nnoremap <SPACE> m`O<ESC>``
+noremap zp :set paste!<CR>
+noremap zn :set number!<CR>
+
+" non portable
+nnoremap ÷ <ESC>
+inoremap ÷ <ESC>
+vnoremap ÷ <ESC>
 
 "        ------- cut here -----
 
@@ -115,6 +122,7 @@ let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
 let g:airline_theme = 'dark'
 let g:airline#extensions#tabline#enabled  = 1      " Enable the list of buffers.
 let g:airline#extensions#tabline#fnamemod = ':t'   " Show just the filename.
+let g:airline#extensions#tabline#buffer_nr_show = 1
 
 if !exists('g:airline_symbols')
 	let g:airline_symbols = {}
@@ -133,3 +141,6 @@ let g:airline_symbols.paste      = 'Þ'
 let g:airline_symbols.paste      = '∥'
 let g:airline_symbols.whitespace = 'Ξ'
 
+
+set exrc                    "Execute per-project configuration file (local .vimrc)
+set secure                  "Protect against evil .vimrc
