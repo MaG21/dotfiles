@@ -54,6 +54,12 @@ if ! type curl &>/dev/null; then
 	fi
 fi
 
+if ! type ruby &>/dev/null; then
+	echo "Tweaking irb..."
+	gem install --silent awesome_print
+	cp "ruby/irbrc" "${HOME}/.irbrc"
+fi
+
 echo "Installing Pathogen..."
 curl -LSso   "${HOME}/.vim/autoload/pathogen.vim" 'https://tpo.pe/pathogen.vim'
 
