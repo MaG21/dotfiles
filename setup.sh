@@ -1,5 +1,8 @@
 #!/bin/bash
 #
+# I could Spawn several processes to increase performance.
+# But right now the waiting time is minimal if one has a
+# decent internet connection.
 
 if [ "$(uname)" == "Darwin" ]; then
 	if ! type brew; then
