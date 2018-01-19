@@ -36,9 +36,13 @@ autocmd BufRead,BufNewFile *.back set nomodifiable
 " Interpret Makefile.inc as a Makefile
 au BufRead,BufNewFile Makefile.inc setfiletype make
 au BufRead,BufNewFile makefile.inc setfiletype make
+au BufRead,BufNewFile Podfile setfiletype ruby
 
 " Change indentation for Haskell, use space instead of tabs :(
 autocmd Filetype haskell setlocal tabstop=8 shiftwidth=8 expandtab
+
+" Change indentation for vue, use space instead of tabs
+autocmd Filetype vue setlocal tabstop=2 shiftwidth=2 expandtab
 
 if &t_Co < 255
 	" Force 255 colors, I don't care!
@@ -56,7 +60,6 @@ if has("gui_running")
 	colorscheme basic-dark
 endif
 
-
 " Status
 set statusline=2
 set laststatus=2    " Show bottom status.
@@ -72,6 +75,7 @@ set ignorecase      " case insensitive search.
 set smartcase       " case sensitive search if a capitar letter is present.
 
 "MAPS
+nnoremap gp `[v`]
 nnoremap <CR> m`o<ESC>``
 nnoremap <SPACE> m`O<ESC>``
 noremap zp :set paste!<CR>
@@ -100,6 +104,13 @@ execute pathogen#infect()
 Helptags                    " Load plugins documentation.
 
 
+"
+" Ack.vim
+" ----
+if executable('ag')
+	let g:ackprg = 'ag --vimgrep'
+endif
+
 " CtrlP
 " ------
 
@@ -111,6 +122,8 @@ let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
       \ --ignore node_modules
       \ --ignore .DS_Store
       \ --ignore "**/*.pyc"
+      \ --ignore *.o
+      \ --ignore *.swp
       \ -g ""'
 
 
