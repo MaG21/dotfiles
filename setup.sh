@@ -19,9 +19,6 @@ source "${HOME}/.bash_profile"
 echo "Setup readline inputrc..."
 cp inputrc "${HOME}/.inputrc"
 
-echo "Setup irb's configuration file irbrc..."
-cp irbrc "${HOME}/.irbrc"
-
 echo "Installing Utilities..."
 
 if [ "$(uname)" == "Darwin" ]; then
@@ -75,7 +72,8 @@ echo "Installing vim-airline..."
 git clone 'https://github.com/bling/vim-airline.git'
 
 echo "Installing ctrlp.vim..."
-git clone 'https://github.com/kien/ctrlp.vim.git'
+git clone 'https://github.com/ctrlpvim/ctrlp.vim.git'
+
 
 echo "Installing vim-surround..."
 git clone 'git://github.com/tpope/vim-surround.git'
