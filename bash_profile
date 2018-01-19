@@ -9,17 +9,16 @@ export LANG=en_US.UTF-8
 
 # CUSTOM
 export D="${HOME}/Downloads"
-
 fkeyword() {
 	if [ $# -eq 3 ]; then
-		find $1 -type f -iname "*.git*" -prune -or -iname $2 -exec grep -i $3 {} +
+		find "$1" -type f -iname "*.git*" -prune -or -iname "$2" -exec grep -i "$3" {} +
 	elif [ $# -eq 2 ]; then
-		find $1 -type f -iname "*.git*" -prune -or -iname "*.rb" -or -iname "*.py" -or -iname "*.[ch]" -or -iname "*.js" -exec grep -i $2 {} +
+		find . -type f \( -iname "*.git*" -prune \) -or "$1" -exec grep -i "$2" {} +
 	elif [ $# -eq 1 ]; then
 		if [ "$1" = "." ]; then
 			echo "WARNING: This will match everything, may not be what you want. Try another pattern."
 		else
-			find "." -type f -iname "*.git*" -prune -or -iname "*.rb" -or -iname "*.py" -or -iname "*.[ch]" -or -iname '*.js' -exec grep -i $1 {} +
+			find "." -type f \( -iname "*.git*" -prune \) -or \( -iname "*.rb" -o -iname "*.py" -o -iname "*.[ch]" -o -iname '*.js' \) -exec grep -i "$1" {} +
 		fi
 	elif [ $# -eq 0 ] || [ $# -gt 3 ]; then
 		echo "Usage: [DIR] [PATTERN] KEYWORD"
@@ -42,6 +41,7 @@ fi
 
 # Set Vim mode
 set -o vi
+bind "÷":vi-movement-mode
 
 # Check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -52,7 +52,7 @@ alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 
-alias ls="ls -G"
+alias ls="ls -F -G"
 alias rm="rm -i"
 
 alias copycwd="pwd | tr -d '\n' | pbcopy"
