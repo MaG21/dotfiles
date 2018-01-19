@@ -1,1 +1,8 @@
 set editing-mode vi
+set colored-stats On
+set echo-control-characters On
+
+$if mode=vi
+        set keymap vi-insert
+        "÷":vi-movement-mode
+$endif
