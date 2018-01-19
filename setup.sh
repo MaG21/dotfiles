@@ -12,12 +12,15 @@ if [ "$(uname)" == "Darwin" ]; then
 fi
 
 echo "Setup bash profile..."
-cp bash_profile ~/.bash_profile
-cp git/git-prompt.sh ~/.git-prompt.sh
-source ~/.bash_profile
+cp bash_profile "${HOME}/.bash_profile"
+cp git/git-prompt.sh "${HOME}/.git-prompt.sh"
+source ""${HOME}/.bash_profile"
 
 echo "Setup readline inputrc..."
-cp inputrc ~/.inputrc
+cp inputrc "${HOME}/.inputrc"
+
+echo "Setup irb's configuration file irbrc..."
+cp irbrc "${HOME}/.irbrc"
 
 echo "Installing Utilities..."
 
