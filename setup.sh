@@ -19,6 +19,9 @@ source "${HOME}/.bash_profile"
 echo "Setup readline inputrc..."
 cp inputrc "${HOME}/.inputrc"
 
+echo "Setup gitignore_global"
+cp git/gitignore_global "{HOME}/.gitignore_global"
+
 echo "Installing Utilities..."
 
 if [ "$(uname)" == "Darwin" ]; then
@@ -31,7 +34,6 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
 fi
 
 echo "Copying configuration file for Vim"
-
 cp "./vimrc"     "${HOME}/.vimrc"
 
 echo "Copying syntax files"
