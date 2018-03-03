@@ -14,9 +14,11 @@ set showcmd                 " Show current (partial) command.
 set wildmenu                " command autocomplete menu.
 set hidden                  " Keep the buffer's history.
 
-set visualbell              " use visual bell instead of beeping
 set ttyfast                 " indicates a fast terminal connection
 set autoread                " Reload files changed outside vim
+
+set tags+=~/.vim/systags    " Load pre-parsed system tags
+set sessionoptions+=unix,slash  "write session files in a MS-unix compatible way.
 
 set bs=2                    " backspacing over everything in insertmode.
 set viminfo='20,\"500       " keep a .viminfo file.
@@ -32,6 +34,10 @@ autocmd BufRead,BufNewFile *.log  set nomodifiable
 autocmd BufRead,BufNewFile *.~    set nomodifiable
 autocmd BufRead,BufNewFile *.bak  set nomodifiable
 autocmd BufRead,BufNewFile *.back set nomodifiable
+
+" Don't interprent *.md files as module-2. I don't know modula-2 and I don't
+" think I'll be using modula-2 in the near future.
+autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 
 " Interpret Makefile.inc as a Makefile
 au BufRead,BufNewFile Makefile.inc setfiletype make
@@ -76,10 +82,15 @@ set smartcase       " case sensitive search if a capitar letter is present.
 
 "MAPS
 nnoremap gp `[v`]
+
+" Insert line below current line without leaving the current position
 nnoremap <CR> m`o<ESC>``
+
+" Insert line above current line without leaving the current position
 nnoremap <SPACE> m`O<ESC>``
+
+" Toggle paste mode
 noremap zp :set paste!<CR>
-noremap zn :set number!<CR>
 
 " non portable
 nnoremap ÷ <ESC>
@@ -95,6 +106,12 @@ vnoremap ÷ <ESC>
 " -  -  -  -
 " Plugins configuration area.
 "
+
+"
+" Reading man pages
+"
+runtime! ftplugin/man.vim
+let g:ft_man_open_mode = 'vert'  " Open man page on a vertical split
 
 " Pathogen
 " --------
