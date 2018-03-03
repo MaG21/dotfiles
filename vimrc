@@ -120,29 +120,33 @@ let g:ft_man_open_mode = 'vert'  " Open man page on a vertical split
 execute pathogen#infect()
 Helptags                    " Load plugins documentation.
 
-
 "
 " Ack.vim
 " ----
 if executable('ag')
-	let g:ackprg = 'ag --vimgrep'
+	let g:ackprg = 'ag --ignore .git
+			\ --ignore "**/*.pyc"
+	                \ --ignore node_modules
+	                \ --ignore *.o
+	                \ --ignore *.swp --vimgrep'
 endif
 
 " CtrlP
 " ------
 
-let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
-      \ --ignore .git
-      \ --ignore .svn
-      \ --ignore .hg
-      \ --ignore .keep
-      \ --ignore node_modules
-      \ --ignore .DS_Store
-      \ --ignore "**/*.pyc"
-      \ --ignore *.o
-      \ --ignore *.swp
-      \ -g ""'
-
+if executable('ag')
+	let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
+				\ --ignore .git
+				\ --ignore .svn
+				\ --ignore .hg
+				\ --ignore .keep
+				\ --ignore node_modules
+				\ --ignore .DS_Store
+				\ --ignore "**/*.pyc"
+				\ --ignore *.o
+				\ --ignore *.swp
+				\ -g ""'
+endif
 
 " vim-airline
 " -----------
@@ -170,7 +174,6 @@ let g:airline_symbols.paste      = 'ρ'
 let g:airline_symbols.paste      = 'Þ'
 let g:airline_symbols.paste      = '∥'
 let g:airline_symbols.whitespace = 'Ξ'
-
 
 set exrc                    "Execute per-project configuration file (local .vimrc)
 set secure                  "Protect against evil .vimrc
