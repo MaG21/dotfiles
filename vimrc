@@ -22,10 +22,22 @@ set sessionoptions+=unix,slash  "write session files in a MS-unix compatible way
 
 set bs=2                    " backspacing over everything in insertmode.
 set viminfo='20,\"500       " keep a .viminfo file.
-set history=91              " keep 91 lines of command history.
+set history=20              " keep 20 lines of command history.
 set shortmess+=I            " Do no display the default initial text.
 set fileformats+=mac        " Mac eol
 set omnifunc=syntaxcomplete#Complete
+
+" Status
+set statusline=2
+set laststatus=2    " Show bottom status.
+
+set nowrap          " Do no wrap lines.
+set noexpandtab     " Do not use space for indentation!
+
+set hlsearch        " Highlight search.
+set incsearch       " Incremental search.
+set ignorecase      " case insensitive search.
+set smartcase       " case sensitive search if a capitar letter is present.
 
 " log and backup files, they are supposed to hold information,
 " this information, represent something from the past, usually
@@ -41,7 +53,7 @@ autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 
 " Interpret Makefile.inc as a Makefile
 au BufRead,BufNewFile Makefile.inc setfiletype make
-au BufRead,BufNewFile makefile.inc setfiletype make
+au BufRead,BufNewFile makefile.inc setfiletype make    " downcase
 au BufRead,BufNewFile Podfile setfiletype ruby
 
 " Change indentation for Haskell, use space instead of tabs :(
@@ -66,20 +78,6 @@ if has("gui_running")
 	colorscheme basic-dark
 endif
 
-" Status
-set statusline=2
-set laststatus=2    " Show bottom status.
-
-" Space
-set nowrap          " Do no wrap lines.
-set noexpandtab     " Do not use space for indentation!
-
-" Search
-set hlsearch        " Highlight search.
-set incsearch       " Incremental search.
-set ignorecase      " case insensitive search.
-set smartcase       " case sensitive search if a capitar letter is present.
-
 "MAPS
 nnoremap gp `[v`]
 
@@ -97,8 +95,35 @@ nnoremap ÷ <ESC>
 inoremap ÷ <ESC>
 vnoremap ÷ <ESC>
 
+
 "        ------- cut here -----
 
+" Install builtin Man plugin
+runtime! ftplugin/man.vim
+
+call plug#begin('~/.vim/plugged')
+
+Plug 'vim-airline/vim-airline'             " Nice status lines
+Plug 'ntpeters/vim-better-whitespace'      " Deal with trailing white spaces
+Plug 'tpope/vim-surround'                  " Cool mappings I yet need to master.
+Plug 'tomtom/tcomment_vim'                 " Comment plugin
+
+Plug 'pangloss/vim-javascript'             " JavaScript Syntax Highlighting
+Plug 'bumaociyuan/vim-swift'               " Swift Syntax Highlighting
+Plug 'posva/vim-vue'                       " Vue Syntax Highlighting
+
+if executable('ag')
+	Plug 'mileszs/ack.vim'             " Search inside files
+endif
+
+
+if has("python3") && (has("win32unix") || has("unix") || has("macunix"))
+	Plug 'Shougo/denite.nvim'          " CtrlP better alternative
+else
+	Plug 'ctrlpvim/ctrlp.vim'          " Fuzzy search
+endif
+
+call plug#end()
 
 
 "
@@ -107,52 +132,24 @@ vnoremap ÷ <ESC>
 " Plugins configuration area.
 "
 
+" vim-better-whitespace
+" ---------------------
 "
-" Reading man pages
+let g:strip_whitespace_on_save=1           " Remove trailing white spaces on save
+let g:strip_whitelines_at_eof=1            " Remove empty lines at the end of file
+
+
+
+" Man.vim
+" -------
 "
-runtime! ftplugin/man.vim
-let g:ft_man_open_mode = 'vert'  " Open man page on a vertical split
+let g:ft_man_open_mode = 'vert'            " Open man page on a vertical split
 
-" Pathogen
-" --------
-" URL: https://github.com/tpope/vim-pathogen
-"
-execute pathogen#infect()
-Helptags                    " Load plugins documentation.
 
-"
-" Ack.vim
-" ----
-if executable('ag')
-	let g:ackprg = 'ag --ignore .git
-			\ --ignore "**/*.pyc"
-	                \ --ignore node_modules
-	                \ --ignore *.o
-	                \ --ignore *.swp --vimgrep'
-endif
-
-" CtrlP
-" ------
-
-if executable('ag')
-	let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
-				\ --ignore .git
-				\ --ignore .svn
-				\ --ignore .hg
-				\ --ignore .keep
-				\ --ignore node_modules
-				\ --ignore .DS_Store
-				\ --ignore "**/*.pyc"
-				\ --ignore *.o
-				\ --ignore *.swp
-				\ -g ""'
-endif
 
 " vim-airline
 " -----------
-" URL: https://github.com/bling/vim-airline
 "
-
 let g:airline_theme = 'dark'
 let g:airline#extensions#tabline#enabled  = 1      " Enable the list of buffers.
 let g:airline#extensions#tabline#fnamemod = ':t'   " Show just the filename.
@@ -174,6 +171,78 @@ let g:airline_symbols.paste      = 'ρ'
 let g:airline_symbols.paste      = 'Þ'
 let g:airline_symbols.paste      = '∥'
 let g:airline_symbols.whitespace = 'Ξ'
+
+
+
+"
+" Ack.vim
+" ----
+if executable('ag')
+	let g:ackprg = 'ag --ignore .git
+			\ --ignore "**/*.pyc"
+	                \ --ignore node_modules
+	                \ --ignore *.o
+	                \ --ignore *.swp --vimgrep'
+endif
+
+
+
+" CtrlP
+" ------
+
+if executable('ag')
+	let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
+				\ --ignore .git
+				\ --ignore .svn
+				\ --ignore .hg
+				\ --ignore .keep
+				\ --ignore node_modules
+				\ --ignore .DS_Store
+				\ --ignore "**/*.pyc"
+				\ --ignore *.o
+				\ --ignore *.swp
+				\ -g ""'
+endif
+
+"
+" Denite.nvim
+"
+
+if has("python3") && (has("win32unix") || has("unix") || has("macunix"))
+	" reset 50% winheight on window resize
+	augroup deniteresize
+		autocmd!
+		autocmd VimResized,VimEnter * call denite#custom#option('default',
+					\'winheight', winheight(0) / 2)
+	augroup end
+
+	call denite#custom#option('default', {'prompt': '❯'})
+
+
+	if executable('ag')
+		call denite#custom#var('file_rec', 'command',
+					\ ['ag', '--follow', '--nocolor', '--nogroup', '-u', '-g', ''])
+
+		call denite#custom#source('grep', 'matchers', ['matcher_regexp'])
+
+		" use ag for content search
+		call denite#custom#var('grep', 'command', ['ag'])
+		call denite#custom#var('grep', 'default_opts',
+					\ ['-i', '--vimgrep'])
+		call denite#custom#var('grep', 'recursive_opts', [])
+		call denite#custom#var('grep', 'pattern_opt', [])
+		call denite#custom#var('grep', 'separator', ['--'])
+		call denite#custom#var('grep', 'final_opts', [])
+	endif
+
+	nnoremap <C-p> :<C-u>Denite file_rec<CR>
+	map <leader>a :DeniteProjectDir -buffer-name=grep -default-action=quickfix grep:::!<CR>
+endif
+
+" ----------------- end cut here ------------------
+
+" These options must reside at the end of this file otherwise they may
+" interfere with some options.
 
 set exrc                    "Execute per-project configuration file (local .vimrc)
 set secure                  "Protect against evil .vimrc
