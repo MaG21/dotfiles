@@ -19,10 +19,9 @@ This is my vimrc file, I always try to keep it as much simple as I can while
 keeping a feature full vim environment.
 
 The following vim plugins will be installed by the script:
-   * Pathogen
+   * vim-plug
    * vim-airline
-   * ctrlp.vim
+   * denite.nvim or ctrlp.vim. (it depends on vim being compiled or not with python3 support)
    * vim-surround
    * vim-javascript
    * vim-better-whitespace
-   * winresizer
