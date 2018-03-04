@@ -12,15 +12,21 @@ if [ "$(uname)" == "Darwin" ]; then
 fi
 
 echo "Setup bash profile..."
-cp bash_profile "${HOME}/.bash_profile"
-cp git/git-prompt.sh "${HOME}/.git-prompt.sh"
-source "${HOME}/.bash_profile"
+cp bash_profile ~/.bash_profile
+cp git/git-prompt.sh ~/.git-prompt.sh
+source ~/.bash_profile
 
 echo "Setup readline inputrc..."
-cp inputrc "${HOME}/.inputrc"
+cp inputrc ~/.inputrc
 
 echo "Setup gitignore_global"
-cp git/gitignore_global "{HOME}/.gitignore_global"
+cp git/gitignore_global /.gitignore_global
+
+if ! type ruby &>/dev/null; then
+	echo "Tweaking irb..."
+	gem install --silent awesome_print
+	cp "ruby/irbrc" ~/.irbrc
+fi
 
 echo "Installing Utilities..."
 
@@ -34,15 +40,15 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
 fi
 
 echo "Copying configuration file for Vim"
-cp "./vimrc"     "${HOME}/.vimrc"
+cp "./vimrc"     ~/.vimrc
 
 echo "Copying syntax files"
-mkdir -p         "${HOME}/.vim/autoload" "${HOME}/.vim/bundle"
-cp -r "./syntax" "${HOME}/.vim/"
+mkdir -p         ~/.vim/autoload ~/.vim/bundle
+cp -r "./syntax" ~/.vim/
 
 echo "Copying colors files"
-mkdir -p         "${HOME}/.vim/colors"
-cp "./colors/basic-dark.vim" "${HOME}/.vim/colors"
+mkdir -p         ~/.vim/colors
+cp ./colors/basic-dark.vim ~/.vim/colors
 
 echo "Installing plugins..."
 
@@ -59,36 +65,9 @@ if ! type curl &>/dev/null; then
 	fi
 fi
 
-if ! type ruby &>/dev/null; then
-	echo "Tweaking irb..."
-	gem install --silent awesome_print
-	cp "ruby/irbrc" "${HOME}/.irbrc"
-fi
-
-echo "Installing Pathogen..."
-curl -LSso   "${HOME}/.vim/autoload/pathogen.vim" 'https://tpo.pe/pathogen.vim'
-
-cd  "${HOME}/.vim/bundle"
-
-echo "Installing vim-airline..."
-git clone 'https://github.com/bling/vim-airline.git'
-
-echo "Installing ctrlp.vim..."
-git clone 'https://github.com/ctrlpvim/ctrlp.vim.git'
-
-
-echo "Installing vim-surround..."
-git clone 'git://github.com/tpope/vim-surround.git'
-
-echo "Installing vim-javascript..."
-git clone 'https://github.com/pangloss/vim-javascript.git'
-
-# This plugin highlight trailing white spaces
-echo "Installing vim-better-whitespace..."
-git clone 'git://github.com/ntpeters/vim-better-whitespace.git'
-
-echo "Installing vim plugin winresizer..."
-git clone 'https://github.com/simeji/winresizer.git'
+echo "Installing vim-plug..."
+mkdir -p ~/.vim/plugged
+curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 if ! type ag &> /dev/null; then
 	echo "Installing ag..."
@@ -101,9 +80,7 @@ if ! type ag &> /dev/null; then
 	fi
 fi
 
-echo "Installing fugitive.vim ..."
-git clone git://github.com/tpope/vim-fugitive.git
-vim -u NONE -c "helptags vim-fugitive/doc" -c q  # generate doc
+vim +PlugInstall +qall
 
 echo "done."
 
