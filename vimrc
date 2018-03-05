@@ -202,6 +202,8 @@ if executable('ag')
 				\ --ignore *.o
 				\ --ignore *.swp
 				\ -g ""'
+else
+	let g:ctrlp_custom_ignore = '\v/|(.(swp|ico|git|svn))$'
 endif
 
 "
