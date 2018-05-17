@@ -9,6 +9,18 @@ if [ "$(uname)" == "Darwin" ]; then
 		echo "brew needs to be installed in order to proceed."
 		exit 1
 	fi
+elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+
+	if ! type ruby &> /dev/null; then
+		if ! type gpg &> /dev/null; then
+			sudo apt-get install gnupg2 -y
+		fi
+
+		curl -sSL https://rvm.io/mpapis.asc | gpg2 --import -
+		curl -sSL https://get.rvm.io | bash -s stable --ruby
+		
+		source ~/.rvm/scripts/rvm
+	fi
 fi
 
 echo "Setup bash profile..."
@@ -22,7 +34,7 @@ cp inputrc ~/.inputrc
 echo "Setup gitignore_global"
 cp git/gitignore_global /.gitignore_global
 
-if ! type ruby &>/dev/null; then
+if type ruby &>/dev/null; then
 	echo "Tweaking irb..."
 	gem install --silent awesome_print
 	cp "ruby/irbrc" ~/.irbrc
