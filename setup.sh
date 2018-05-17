@@ -32,7 +32,7 @@ echo "Setup readline inputrc..."
 cp inputrc ~/.inputrc
 
 echo "Setup gitignore_global"
-cp git/gitignore_global /.gitignore_global
+cp git/gitignore_global ~/.gitignore_global
 
 if type ruby &>/dev/null; then
 	echo "Tweaking irb..."
