@@ -116,12 +116,8 @@ if executable('ag')
 	Plug 'mileszs/ack.vim'             " Search inside files
 endif
 
+Plug 'ctrlpvim/ctrlp.vim'          " Fuzzy search
 
-if has("python3") && (has("win32unix") || has("unix") || has("macunix"))
-	Plug 'Shougo/denite.nvim'          " CtrlP better alternative
-else
-	Plug 'ctrlpvim/ctrlp.vim'          " Fuzzy search
-endif
 
 call plug#end()
 
@@ -204,41 +200,6 @@ if executable('ag')
 				\ -g ""'
 else
 	let g:ctrlp_custom_ignore = '\v[\/](node_modules|target|dist|DS_Store)|(\.(swp|ico|git|svn))$'
-endif
-
-"
-" Denite.nvim
-"
-
-if has("python3") && (has("win32unix") || has("unix") || has("macunix"))
-	" reset 50% winheight on window resize
-	augroup deniteresize
-		autocmd!
-		autocmd VimResized,VimEnter * call denite#custom#option('default',
-					\'winheight', winheight(0) / 2)
-	augroup end
-
-	call denite#custom#option('default', {'prompt': '❯'})
-
-
-	if executable('ag')
-		call denite#custom#var('file_rec', 'command',
-					\ ['ag', '--follow', '--nocolor', '--nogroup', '-u', '-g', ''])
-
-		call denite#custom#source('grep', 'matchers', ['matcher_regexp'])
-
-		" use ag for content search
-		call denite#custom#var('grep', 'command', ['ag'])
-		call denite#custom#var('grep', 'default_opts',
-					\ ['-i', '--vimgrep'])
-		call denite#custom#var('grep', 'recursive_opts', [])
-		call denite#custom#var('grep', 'pattern_opt', [])
-		call denite#custom#var('grep', 'separator', ['--'])
-		call denite#custom#var('grep', 'final_opts', [])
-	endif
-
-	nnoremap <C-p> :<C-u>Denite file_rec<CR>
-	map <leader>a :DeniteProjectDir -buffer-name=grep -default-action=quickfix grep:::!<CR>
 endif
 
 " ----------------- end cut here ------------------
