@@ -35,6 +35,9 @@ echo "Setup gitignore_global"
 cp git/gitignore_global ~/.gitignore_global
 
 if type ruby &>/dev/null; then
+	echo "Installing Bundle"
+	gem install bundle
+
 	echo "Tweaking irb..."
 	gem install --silent awesome_print
 	cp "ruby/irbrc" ~/.irbrc
