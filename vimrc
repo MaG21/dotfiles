@@ -39,6 +39,9 @@ set incsearch       " Incremental search.
 set ignorecase      " case insensitive search.
 set smartcase       " case sensitive search if a capitar letter is present.
 
+" Turn on omni complete for CSS on every css file
+autocmd FileType css set omnifunc=csscomplete#CompleteCSS
+
 " log and backup files, they are supposed to hold information,
 " this information, represent something from the past, usually
 " one would not want to modify them.
