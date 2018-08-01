@@ -39,9 +39,6 @@ set incsearch       " Incremental search.
 set ignorecase      " case insensitive search.
 set smartcase       " case sensitive search if a capitar letter is present.
 
-" Turn on omni complete for CSS on every css file
-autocmd FileType css set omnifunc=csscomplete#CompleteCSS
-
 " log and backup files, they are supposed to hold information,
 " this information, represent something from the past, usually
 " one would not want to modify them.
@@ -78,8 +75,7 @@ endif
 if has("gui_running")
 	imap <S-CR> <Esc>
 	nmap <S-CR> <Esc>
-	colorscheme basic-dark
-endif
+end
 
 "MAPS
 nnoremap gp `[v`]
@@ -114,13 +110,15 @@ Plug 'tomtom/tcomment_vim'                 " Comment plugin
 Plug 'pangloss/vim-javascript'             " JavaScript Syntax Highlighting
 Plug 'bumaociyuan/vim-swift'               " Swift Syntax Highlighting
 Plug 'posva/vim-vue'                       " Vue Syntax Highlighting
+Plug 'hail2u/vim-css3-syntax'
+
 
 if executable('ag')
 	Plug 'mileszs/ack.vim'             " Search inside files
 endif
 
-Plug 'ctrlpvim/ctrlp.vim'          " Fuzzy search
 
+Plug 'ctrlpvim/ctrlp.vim'          " Fuzzy search
 
 call plug#end()
 
