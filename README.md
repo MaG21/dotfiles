@@ -20,7 +20,7 @@ make basic
 make vim
 ```
 
-See the pattern? `make` is a little beast, let him work, he'll know how to resolve dependencies depentencies.
+See the pattern? `make` is a little beast, let him work, he'll know how to resolve depentencies.
 
 > Wait a second ... `make` !? ... wot? MMM ...
 > Yes my friend! you could tell `make` to work in parallel
