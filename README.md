@@ -10,7 +10,7 @@ you'll seen in a while. Don't believe me? Check this out:
 make
 ```
 
-#### Install just the basic environment run:
+#### To install just the basic environment run:
 ```sh
 make basic
 ```
@@ -20,8 +20,7 @@ make basic
 make vim
 ```
 
-See the pattern? Yes, `make` is a little beast, let him work, he'll know how to solve
-the depentencies.
+See the pattern? `make` is a little beast, let him work, he'll know how to resolve dependencies depentencies.
 
 > Wait a second ... `make` !? ... wot? MMM ...
 > Yes my friend! you could tell `make` to work in parallel
@@ -31,8 +30,7 @@ the depentencies.
 make -j 3
 ```
 
-Yes, by now you just want to see the Goddarm `Makefile`, but ... you'll be disappointed of how
-simple it is;).
+Yes, by now you just want to see the Goddarm `Makefile`, but ... you'll be disappointed of how simple it is;).
 
 ## What gets installed
 
