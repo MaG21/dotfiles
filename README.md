@@ -2,7 +2,7 @@
 
 To install this automatically, make sure you have `make` installed.
 
-Before going any futher, let me tell you that, this little project would be the beautiest
+Before going any futher, let me tell you that, this little project would be the beautiest thing
 you'll seen in a while. Don't believe me? Check this out:
 
 #### To install the environment run:
