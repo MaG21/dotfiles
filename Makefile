@@ -48,19 +48,16 @@ gnupg2:
 ruby: curl gnupg2
 	@echo "INSTALLING RUBY..."
 	@curl -sSL https://get.rvm.io | bash -s stable --ruby
+	@cp assets/ruby/irbrc ~/.irbrc
 
 gems: ruby
-ifeq ($(IS_BASH_PRESENT),bash)
 	-source ~/.rvm/scripts/rvm
-endif
-
 ifneq ($(shell which ruby),)
 	@echo "Installing Ruby gems"
 	@gem install --silent bundle
 
 	@echo "Tweaking irb..."
 	@gem install --silent awesome_print
-	@cp assets/ruby/irbrc ~/.irbrc
 endif
 
 
