@@ -1,24 +1,24 @@
-This repository represents a minimal environment set to my preferences.
+Minimal environment set to my preferences.
 
-To install this environment automatically make sure you have `make` installed.
+To install this automatically, make sure you have `make` installed.
 
 Before going any futher, let me tell you that, this little project would be the beautiest
 you'll seen in a while. Do not believe me? Check this out:
 
 #### To install the environment run:
-`` `sh
+```sh
 make
-`` `
+```
 
 #### Install just the basic environment run:
-`` `sh
+```sh
 make basic
-`` `
+```
 
 #### You're just here because of my Vim environment huh? Sure:
-`` `sh
+```sh
 make vim
-`` `
+```
 
 See the pattern? Yes, `make` is a little beast, let him work, he'll know how to solve
 the depentencies.
@@ -27,9 +27,9 @@ the depentencies.
 > Yes my friend! you could tell `make` to work in parallel
 
 #### To install the environment in parallel run:
-`` `sh
+```sh
 make -j 3
-`` `
+```
 
 Yes, by now you just want to see the Goddarm `Makefile`, but ... you'll be disappointed of how
 simple it is;).
