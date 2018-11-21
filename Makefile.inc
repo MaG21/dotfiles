@@ -20,6 +20,8 @@ APT  = $(notdir $(shell which apt-get))
 #
 # ENVIRONMENT
 #
+
+IS_BASH_PRESENT  := $(notdir $(shell which bash))
 OPERATIVE_SYSTEM := unsupported
 PACKAGE_INSTALL  :=
 
@@ -38,8 +40,14 @@ GNUPG_PACKAGE =
 # Detect operative system and package manager
 #
 
+ifeq ($(IS_BASH_PRESENT),bash)
+  # On linux use bash whenever possible
+  SHELL := /bin/bash
+endif
 
 ifeq ($(shell uname -s),Linux)
+  OPERATIVE_SYSTEM = unsupported_linux
+
   ifeq ($(YUM),yum)
      OPERATIVE_SYSTEM = redhat
      PACKAGE_INSTALL  = sudo yum install --quiet
@@ -64,9 +72,6 @@ ifeq ($(shell uname -s),Linux)
      GNUPG_PACKAGE = gnupg2
   endif
 
-  ifeq ($(APT),)
-	OPERATIVE_SYSTEM = unsupported_linux
-  endif
 endif
 
 ifeq ($(shell uname -s),Darwin)
