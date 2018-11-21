@@ -22,8 +22,9 @@ make vim
 
 See the pattern? `make` is a little beast, let him work, he'll know how to resolve depentencies.
 
-> Wait a second ... `make` !? ... wot? MMM ...
-> Yes my friend! you could tell `make` to work in parallel
+&gt; Wait a second ... `make` !? ... wot? MMM ...
+
+&gt; Yes my friend! you could say `make` to work in parallel
 
 #### To install the environment in parallel run:
 ```sh
