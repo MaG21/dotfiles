@@ -1,9 +1,9 @@
-Minimal environment set to my preferences.
+# Minimal environment set to my preferences.
 
 To install this automatically, make sure you have `make` installed.
 
 Before going any futher, let me tell you that, this little project would be the beautiest
-you'll seen in a while. Do not believe me? Check this out:
+you'll seen in a while. Don't believe me? Check this out:
 
 #### To install the environment run:
 ```sh
