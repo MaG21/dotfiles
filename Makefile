@@ -1,3 +1,6 @@
+# By Manuel A. Güílamo, MaG
+# https://github.com/MaG21
+
 include Makefile.inc
 
 BASIC_TARGETS  := environment git vim
