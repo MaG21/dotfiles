@@ -15,7 +15,7 @@ make
 make basic
 ```
 
-#### You're just here because of my Vim environment huh? Sure:
+#### You're here just because of my Vim environment huh? Sure:
 ```sh
 make vim
 ```
@@ -24,7 +24,7 @@ See the pattern? `make` is a little beast, let him work, he'll know how to resol
 
 &gt; Wait a second ... `make` !? ... wot? MMM ...
 
-&gt; Yes my friend! you could say `make` to work in parallel
+&gt; Yes my friend! you could make `make` work in parallel with a simple option.
 
 #### To install the environment in parallel run:
 ```sh
