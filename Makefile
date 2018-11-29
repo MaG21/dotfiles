@@ -81,7 +81,7 @@ endif
 darwin: brew
 	brew install wget
 
-rethat:
+redhat:
 	# insert setup commands here
 
 ubuntu:
