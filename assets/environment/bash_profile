@@ -25,6 +25,15 @@ fkeyword() {
 	fi
 }
 
+# Run a http server on current directory or the one passed on the first argument
+run-http-server() {
+        if [ $# -eq 1 ]; then
+                ruby -rwebrick -e"WEBrick::HTTPServer.new(:Port => 8000, :DocumentRoot => '$1').start"
+        elif [ $# -eq 0 ] || [ $# -gt 3 ]; then
+                ruby -rwebrick -e'WEBrick::HTTPServer.new(:Port => 8000, :DocumentRoot => Dir.pwd).start'
+        fi
+}
+
 # NOTE: Most of the time when I copy the path of a directory, I'm planning on
 #       doing something there, usually, to open a new terminal in said
 #       directory, so I will save myself the trouble of this repetitive task.
