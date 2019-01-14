@@ -29,7 +29,7 @@ fkeyword() {
 run-http-server() {
         if [ $# -eq 1 ]; then
                 ruby -rwebrick -e"WEBrick::HTTPServer.new(:Port => 8000, :DocumentRoot => '$1').start"
-        elif [ $# -eq 0 ] || [ $# -gt 3 ]; then
+        elif [ $# -eq 0 ]; then
                 ruby -rwebrick -e'WEBrick::HTTPServer.new(:Port => 8000, :DocumentRoot => Dir.pwd).start'
         fi
 }
