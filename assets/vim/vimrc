@@ -135,6 +135,7 @@ call plug#end()
 let g:strip_whitelines_at_eof=1            " Remove empty lines at the end of file
 let g:strip_whitespace_on_save=1           " Remove trailing white spaces on save
 let g:strip_whitespace_confirm=0           " strip without asking
+let g:show_spaces_that_precede_tabs=1      " Show space characters that appear before or in-between tabs
 
 
 
