@@ -27,7 +27,7 @@ fkeyword() {
 	fi
 }
 
-# Run a http server on current directory or the one passed on the first argument
+# Run a http server in current directory or use directory specified as first argument
 run-http-server() {
         if [ $# -eq 1 ]; then
                 ruby -rwebrick -e"WEBrick::HTTPServer.new(:Port => 8000, :DocumentRoot => '$1').start"
