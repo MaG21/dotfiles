@@ -11,20 +11,43 @@ export HOMEBREW_NO_ANALYTICS=1    # NO Google Analytics, thanks!
 
 # CUSTOM
 export D="${HOME}/Downloads"
+
+# NOTE that the following functions will be available as commands once installed.
+
+# recursively list files (consider using tree if no filter is applied)
+# Example, recusively list every ruby file, ie $ filenames "*.rb"
+# maybe you may want to pass a find criteria ie, list ruby and python files. $ filenames '*.rb' -or -iname '*.py'
+filenames() {
+        if [ "$#" -eq 0 ] ; then
+                find . -type f
+        elif [ "$#" -eq 1 ]; then
+                find . -iname "$1" -type f
+        else
+                find . -iname "$1" -type f "$2"
+        fi
+}
+
+# useful to text inside a directory full of files
+# Search foobar inside every ruby file, ie : $ fkeyword "*.rb" foobar
 fkeyword() {
-	if [ $# -eq 3 ]; then
-		find "$1" -type f -iname "*.git*" -prune -or -iname "$2" -exec grep -i "$3" {} +
-	elif [ $# -eq 2 ]; then
-		find . -type f \( -iname "*.git*" -prune \) -or "$1" -exec grep -i "$2" {} +
-	elif [ $# -eq 1 ]; then
-		if [ "$1" = "." ]; then
-			echo "WARNING: This will match everything, may not be what you want. Try another pattern."
-		else
-			find "." -type f \( -iname "*.git*" -prune \) -or \( -iname "*.rb" -o -iname "*.py" -o -iname "*.[ch]" -o -iname '*.js' \) -exec grep -i "$1" {} +
-		fi
-	elif [ $# -eq 0 ] || [ $# -gt 3 ]; then
-		echo "Usage: [DIR] [PATTERN] KEYWORD"
-	fi
+        if [ "$#" -eq 0 ] ; then
+                echo "Missing arguments";
+                echo "fkeyword <KEYWORD> [OPTIONS]"
+                return 1
+        fi
+
+        if [ "$#" -eq 1 ]; then
+                find . -type f -print0 | xargs -0 -I '{}' egrep -i "$1" '{}'
+
+        elif [ "$#" -gt 1 ]; then
+                array="${@:1:$(($#-1))}"
+                keyword="${@: -1}"
+
+                find . -type f ${array[@]} -exec grep -i "$keyword" {} +;
+
+        fi
+
+        return 0
 }
 
 # Run a http server in current directory or use directory specified as first argument
