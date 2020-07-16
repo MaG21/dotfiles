@@ -21,9 +21,9 @@ filenames() {
         if [ "$#" -eq 0 ] ; then
                 find . -type f
         elif [ "$#" -eq 1 ]; then
-                find . -iname "$1" -type f
+                find . -type f -iname "$1"
         else
-                find . -iname "$1" -type f "$2"
+                find . -type f -iname "$1" "${@:2}"
         fi
 }
 
