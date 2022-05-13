@@ -7,6 +7,10 @@ export EDITOR=vim
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 export BUNDLE_JOBS=4
+export PATH=/opt/homebrew/bin:$PATH
+export PATH=/opt/homebrew/sbin:$PATH
+
+export BASH_SILENCE_DEPRECATION_WARNING=1
 export HOMEBREW_NO_ANALYTICS=1    # NO Google Analytics, thanks!
 
 # CUSTOM
@@ -37,14 +41,13 @@ fkeyword() {
         fi
 
         if [ "$#" -eq 1 ]; then
-                find . -type f -print0 | xargs -0 -I '{}' egrep -i "$1" '{}'
+                find . -type f -iname "*.py" -exec grep -n -E --color=auto -C3 -i "$1" {} +;
 
         elif [ "$#" -gt 1 ]; then
                 array="${@:1:$(($#-1))}"
                 keyword="${@: -1}"
 
-                find . -type f ${array[@]} -exec grep -i "$keyword" {} +;
-
+                find . -type f -iname "${array[@]}" -exec grep -n -E --color=auto -C3 -i "$keyword" {} +;
         fi
 
         return 0
@@ -69,7 +72,7 @@ run-http-server() {
 if type pbpaste &> /dev/null; then
 	CLIPBOARD=$(pbpaste)
 	if [ -d "$CLIPBOARD" ]; then
-		cd $CLIPBOARD
+		cd "$CLIPBOARD"
 	fi
 fi
 
@@ -90,3 +93,13 @@ alias ls="ls -F -G"
 alias rm="rm -i"
 
 alias copycwd="pwd | tr -d '\n' | pbcopy"
+alias commit="vim +Git +on"
+
+# PyEnv
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init --path)"
+
+# rbenv
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
