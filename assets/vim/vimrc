@@ -80,9 +80,6 @@ end
 "MAPS
 nnoremap gp `[v`]
 
-" Insert line below current line without leaving the current position
-nnoremap <CR> m`o<ESC>``
-
 " Insert line above current line without leaving the current position
 nnoremap <SPACE> m`O<ESC>``
 
@@ -104,9 +101,13 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'vim-airline/vim-airline'             " Nice status lines
 Plug 'ntpeters/vim-better-whitespace'      " Deal with trailing white spaces
+Plug 'tpope/vim-fugitive'                  " Fugitive, git for vim // vim for git
 Plug 'tpope/vim-surround'                  " Cool mappings I yet need to master.
 Plug 'tomtom/tcomment_vim'                 " Comment plugin
+Plug 'godlygeek/tabular'                   " Tabularize
+Plug 'zivyangll/git-blame.vim'
 
+Plug 'hashivim/vim-terraform'              " Terraform autoformat
 Plug 'pangloss/vim-javascript'             " JavaScript Syntax Highlighting
 Plug 'bumaociyuan/vim-swift'               " Swift Syntax Highlighting
 Plug 'posva/vim-vue'                       " Vue Syntax Highlighting
@@ -128,6 +129,19 @@ call plug#end()
 " -  -  -  -
 " Plugins configuration area.
 "
+
+" git-blame.vim
+" --------------
+"
+nnoremap <Leader>s :<C-u>call gitblame#echo()<CR>
+
+
+"
+" vim-terraform
+" --------------------
+"
+let g:terraform_align=1
+let g:terraform_fmt_on_save=0
 
 " vim-better-whitespace
 " ---------------------
