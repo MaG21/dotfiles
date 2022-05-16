@@ -40,14 +40,16 @@ fkeyword() {
                 return 1
         fi
 
+        prune="-type d -name node_modules -prune -o -type d -name .git -prune -o -type d -name __pycache__ -prune"
+
         if [ "$#" -eq 1 ]; then
-                find . -type f -iname "*.py" -exec grep -n -E --color=auto -C3 -i "$1" {} +;
+                find . ${prune} -o -type f -iname "*.py" -exec grep -H -n -E --color=auto -C3 -i "$1" {} \;
 
         elif [ "$#" -gt 1 ]; then
                 array="${@:1:$(($#-1))}"
                 keyword="${@: -1}"
 
-                find . -type f -iname "${array[@]}" -exec grep -n -E --color=auto -C3 -i "$keyword" {} +;
+                find . ${prune} -o -type f -iname "${array[@]}" -exec grep -H -n -E --color=auto -C3 -i "$keyword" {} \;
         fi
 
         return 0
