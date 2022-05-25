@@ -33,24 +33,128 @@ filenames() {
 
 # useful to text inside a directory full of files
 # Search foobar inside every ruby file, ie : $ fkeyword "*.rb" foobar
+# TODO: use find . | grep 'filter file' | xargs
 fkeyword() {
+	usage() {
+	  printf "
+  Recursively search files
+
+  usage: fkeyword [FILE PATTERN] <REGEX|KEYWORD> [OPTIONS]
+
+    PATTERN OPTIONS
+     -rb			Ruby files of extensions. rb, erb
+     -py			Python files of extension. py
+     -js			JavaScript files of extension. js
+     -c				C files of extensions. c, h
+     -json			JSON files of extension. json
+     -yml			YAML files of extension. yml
+
+    GREP OPTIONS
+    -v				Invert match.
+    -I, --case-sensitive	Case sensitive search.
+
+    GENERAL
+    -h, --help			Show this help.
+	  "
+	  echo
+	}
+
         if [ "$#" -eq 0 ] ; then
-                echo "Missing arguments";
-                echo "fkeyword <KEYWORD> [OPTIONS]"
+		usage
                 return 1
         fi
 
-        prune="-type d -name node_modules -prune -o -type d -name .git -prune -o -type d -name __pycache__ -prune"
+	grep_case_option="-i" # default case-insensitive
+	grep_match_type=
+	patterns=()
+	param1=
+	param2=
+	count=0
+	while [ $# -gt 0 ]; do
+		case $1 in
+			-rb )
+				patterns+=('-iname "*.rb" -o -iname "*.erb"')
+				;;
+			-py )
+				patterns+=('-iname "*.py"')
+				;;
+			-js )
+				patterns+=('-iname "*.js" -o -iname "*.ts"')
+				;;
+			-json )
+				patterns+=('-iname "*.json"')
+				;;
+			-yml )
+				patterns+=('-iname "*.yml"')
+				;;
+			-sh )
+				patterns+=('-iname "*.sh"')
+				;;
+			-c )
+				patterns+=("-iname '*.[ch]'")
+				;;
+			-I | --case-sensitive )
+				grep_case_option=""
+				;;
+			-v | --invert-match )
+				grep_match_type="-v"
+				;;
+			-h | --help )
+				usage
+				return 0
+				;;
+			-* )
+				echo "Unknown option: $1"
+				usage
+				return 1
+				;;
+			* )	if [ $count -eq 0 ]; then
+					param1=$1
+					((count++))
+				elif [ $count -eq 1 ]; then
+					param2=$1
+					((count++))
+				else
+					echo "Error: Wrong invocation"
+					usage
+					return 1
+				fi
+		esac
+		shift
+	done
 
-        if [ "$#" -eq 1 ]; then
-                find . ${prune} -o -type f -iname "*.py" -exec grep -H -n -E --color=auto -C3 -i "$1" {} \;
+	keyword=
+	if [ $count -eq 0 ]; then
+		echo "Missing regex/keyword"
+		usage
+	elif [ $count -eq 1 ]; then
+		keyword=$param1
+	elif [ $count -eq 2 ]; then
+		keyword=$param2
+		patterns+=("-iname '$param1'")
+	fi
 
-        elif [ "$#" -gt 1 ]; then
-                array="${@:1:$(($#-1))}"
-                keyword="${@: -1}"
+	# if a pattern was not provided, use default
+	if [ ${#patterns[@]} -eq 0 ]; then
+		# by default -py and -rb options are enabled
+		patterns+=('-iname "*.py" -o -iname "*.rb" -o -iname "*.erb"')
+	fi
 
-                find . ${prune} -o -type f -iname "${array[@]}" -exec grep -H -n -E --color=auto -C3 -i "$keyword" {} \;
-        fi
+	# -s: silent warning
+	# -H: show filename
+	# -n: show lines number
+	# -E: Extended regular expressions
+	# -C3: Get context around match, 3 lines around match
+	default_grep_options="-s -H -n -E --color=auto -C3"
+	grep_options="$default_grep_options $grep_match_type $grep_case_option"
+
+	prune="-type d -name '*/node_modules' -prune -o -type d -name '*/.git' -prune -o -type d -name '*/__pycache__' -prune"
+
+	separator=" -o "
+	criteria="$( printf "${separator}%s" "${patterns[@]}" )"
+	criteria="${criteria:${#separator}}" # remove leading separator
+
+	eval "find . \( ${prune} -o ${criteria} \) -type f -exec grep ${grep_options} \"$keyword\" {} \+"
 
         return 0
 }
@@ -96,3 +200,12 @@ alias rm="rm -i"
 
 alias copycwd="pwd | tr -d '\n' | pbcopy"
 alias commit="vim +Git +on"
+
+# PyEnv
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init --path)"
+
+# rbenv
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
