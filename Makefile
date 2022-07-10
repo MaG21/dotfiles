@@ -40,24 +40,20 @@ ifeq ($(IS_BASH_PRESENT),bash)
 	. ~/.bash_profile
 endif
 
-gnupg2:
-	$(PACKAGE_INSTALL) $(GNUPG_PACKAGE)
-	# retrieve necessary keys
-	@gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
-
-ruby: curl gnupg2
+ruby: curl environment
 	@echo "INSTALLING RUBY..."
-	@curl -sSL https://get.rvm.io | bash -s stable --ruby
+	@git clone git://github.com/rbenv/rbenv.git ~/.rbenv
+ifeq ($(IS_BASH_PRESENT),bash)
+	echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bash_profile
+	@echo 'eval "$(rbenv init -)"' >> ~/.bash_profile
 	@cp assets/ruby/irbrc ~/.irbrc
+	-source ~/.bash_profile
+endif
 
 gems: ruby
-	-source ~/.rvm/scripts/rvm
 ifneq ($(shell which ruby),)
 	@echo "Installing Ruby gems"
 	@gem install --silent bundle
-
-	@echo "Tweaking irb..."
-	@gem install --silent awesome_print
 endif
 
 
