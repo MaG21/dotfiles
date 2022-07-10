@@ -41,7 +41,7 @@ GNUPG_PACKAGE =
 #
 
 ifeq ($(IS_BASH_PRESENT),bash)
-  # On linux use bash whenever possible
+  # Use bash whenever possible
   SHELL := /bin/bash
 endif
 
