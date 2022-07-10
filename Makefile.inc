@@ -22,6 +22,7 @@ APT  = $(notdir $(shell which apt-get))
 #
 
 IS_BASH_PRESENT  := $(notdir $(shell which bash))
+IS_ZSH_PRESENT   := $(notdir $(shell which zsh))
 OPERATIVE_SYSTEM := unsupported
 PACKAGE_INSTALL  :=
 
@@ -41,8 +42,12 @@ GNUPG_PACKAGE =
 #
 
 ifeq ($(IS_BASH_PRESENT),bash)
-  # Use bash whenever possible
   SHELL := /bin/bash
+else ifeq ($(IS_ZSH_PRESENT),zsh)
+  SHELL := /bin/bash
+else
+  # NOT SUPPORTED for other shells
+  SHELL := $(wich nologin)
 endif
 
 ifeq ($(shell uname -s),Linux)
