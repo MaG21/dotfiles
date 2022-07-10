@@ -37,17 +37,26 @@ ifeq ($(IS_BASH_PRESENT),bash)
 	@cp assets/environment/bash_profile ~/.bash_profile
 	@cp assets/git/git-prompt.sh ~/.git-prompt.sh
 	echo "sourcing"
-	. ~/.bash_profile
+	@source ~/.bash_profile
 endif
 
 ruby: curl environment
 	@echo "INSTALLING RUBY..."
+	@cp assets/ruby/irbrc ~/.irbrc
 	@git clone git://github.com/rbenv/rbenv.git ~/.rbenv
+	-cd ~/.rbenv && src/configure && make -C src; true
+ifeq ($(shell uname -s),Darwin)
+	-$(PACKAGE_INSTALL) ruby-build
+endif
 ifeq ($(IS_BASH_PRESENT),bash)
 	echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bash_profile
 	@echo 'eval "$(rbenv init -)"' >> ~/.bash_profile
 	@cp assets/ruby/irbrc ~/.irbrc
 	-source ~/.bash_profile
+else ifeq ($(IS_ZSH_PRESENT),zsh)
+	echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.zshrc
+	@echo 'eval "$(rbenv init -)"' >> ~/.zshrc
+	-source ~/.zshrc
 endif
 
 gems: ruby
