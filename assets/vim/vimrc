@@ -6,13 +6,14 @@ scriptencoding utf-8
 filetype plugin indent on
 syntax on
 
-set ai                      " Auto indent
+set autoindent              " Auto indent
 set ruler                   " Show the cursor position; always.
 set nomodeline              " modeline might compromise the system, I don't need it anyways.
 set nocompatible            " Vi is nice, but I preffer VIM.
 set showcmd                 " Show current (partial) command.
 set wildmenu                " command autocomplete menu.
 set hidden                  " Keep the buffer's history.
+set splitright              " Open everything in the right split
 
 set ttyfast                 " indicates a fast terminal connection
 set autoread                " Reload files changed outside vim
@@ -20,24 +21,78 @@ set autoread                " Reload files changed outside vim
 set tags+=~/.vim/systags    " Load pre-parsed system tags
 set sessionoptions+=unix,slash  "write session files in a MS-unix compatible way.
 
-set bs=2                    " backspacing over everything in insertmode.
 set viminfo='20,\"500       " keep a .viminfo file.
 set history=20              " keep 20 lines of command history.
 set shortmess+=I            " Do no display the default initial text.
+set shortmess+=c            " Don't pass messages to |ins-completion-menu|.
 set fileformats+=mac        " Mac eol
 set omnifunc=syntaxcomplete#Complete
+set backspace=indent,eol,start " backspacing over everything in insertmode.
+
+set relativenumber   " Use relative numbers to the current line. faster if used right
+set numberwidth=3    " Whe displaying line numbers, don't use a annoying wide number column.
+
+set nobackup
+set nowritebackup
+set cmdheight=2
+set updatetime=300    " Not advisable to have longer times
+
+" Scroll
+"
+set sidescrolloff=5   " Keep visible 5 char when scrolling horizontally
+
+" Folds
+" Table of posible values for foldopen and the operators involved.
+"
+" all         any
+" block       "(", "{", "[[", "[{", etc.
+" hor         horizontal movements: "l", "w", "fx", etc.
+" insert      any command in Insert mode
+" jump        far jumps: "G", "gg", etc.
+" mark        jumping to a mark: "'m", CTRL-O, etc.
+" percent     "%"
+" quickfix    ":cn", ":crew", ":make", etc.
+" search      search for a pattern: "/", "n", "*", "gd", etc.
+"                 (not for a search pattern in a ":" command)
+"                 Also for |[s| and |]s|.
+" tag         jumping to a tag: ":ta", CTRL-T, etc.
+" undo        undo or redo: "u" and CTRL-R
+set foldopen-=block         " Pull out block so navigation with {, } don't open the folds
 
 " Status
 set statusline=2
 set laststatus=2    " Show bottom status.
 
+set display +=lastline
+
 set nowrap          " Do no wrap lines.
-set noexpandtab     " Do not use space for indentation!
+set noexpandtab     " Do not use space for indentation unless overriden
 
 set hlsearch        " Highlight search.
 set incsearch       " Incremental search.
 set ignorecase      " case insensitive search.
 set smartcase       " case sensitive search if a capitar letter is present.
+set nrformats-=octal " CTRL + A or X. Increment as decimal number starting with 0
+
+
+" Change line number color
+hi LineNr       term=NONE cterm=NONE ctermfg=7 ctermbg=0
+
+" Honestly not used a lot but may come handy for plugins that use :list
+if &listchars ==# 'eol:$'
+  set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
+endif
+
+if v:version > 703 || v:version == 703 && has("patch541")
+  set formatoptions+=j " Delete comment character when joining commented lines
+endif
+
+set sessionoptions-=options
+set viewoptions-=options
+
+"------- JSON PRETTYFY ----
+" In any buffer use <range>JSONPretty
+command! -range=% JSONPretty execute ':silent '.<line1>.','.<line2>.'!python -m json.tool'
 
 " log and backup files, they are supposed to hold information,
 " this information, represent something from the past, usually
@@ -50,35 +105,37 @@ autocmd BufRead,BufNewFile *.back set nomodifiable
 " Don't interprent *.md files as module-2. I don't know modula-2 and I don't
 " think I'll be using modula-2 in the near future.
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+autocmd BufRead,BufNewFile *.md setlocal textwidth=80 wrap linebreak
 
 " Interpret Makefile.inc as a Makefile
 au BufRead,BufNewFile Makefile.inc setfiletype make
 au BufRead,BufNewFile makefile.inc setfiletype make    " downcase
 au BufRead,BufNewFile Podfile setfiletype ruby
 
-" Change indentation for Haskell, use space instead of tabs :(
-autocmd Filetype haskell setlocal tabstop=8 shiftwidth=8 expandtab
+autocmd Filetype haskell setlocal tabstop=8 shiftwidth=8 expandtab  " Haskell use 2 space indentation
+autocmd Filetype ruby setlocal tabstop=2 shiftwidth=2 expandtab     " Ruby use 2 space indentation
+autocmd Filetype python setlocal tabstop=4 shiftwidth=4 expandtab   " Python use 4 indentation
+autocmd Filetype html setlocal tabstop=2 shiftwidth=2 expandtab     " HTML use 2 space indentation
+autocmd Filetype vue setlocal tabstop=2 shiftwidth=2 expandtab      " Vue use 2 space indentation
+autocmd Filetype ruby setlocal tabstop=2 shiftwidth=2 expandtab
+autocmd Filetype javascript setlocal tabstop=2 shiftwidth=2 expandtab
 
-" Change indentation for vue, use space instead of tabs
-autocmd Filetype vue setlocal tabstop=2 shiftwidth=2 expandtab
-
-if &t_Co < 255
-	" Force 255 colors, I don't care!
-	set t_Co=255
+"""""""
+" MAPS
+"""""""
+" Use <C-L> to clear the highlighting of :set hlsearch.
+if maparg('<C-L>', 'n') ==# ''
+  nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
 endif
 
-" Whe displaying line numbers, don't use a annoying wide number column.
-if v:version >= 700
-	set numberwidth=3
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
+" position.
+" <cr> could be remapped by other vim plugin, try `:verbose imap <CR>`.
+if exists('*complete_info')
+    inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+else
+    inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 endif
-
-if has("gui_running")
-	imap <S-CR> <Esc>
-	nmap <S-CR> <Esc>
-end
-
-"MAPS
-nnoremap gp `[v`]
 
 " Insert line above current line without leaving the current position
 nnoremap <SPACE> m`O<ESC>``
@@ -94,32 +151,31 @@ vnoremap ÷ <ESC>
 
 "        ------- cut here -----
 
-" Install builtin Man plugin
-runtime! ftplugin/man.vim
+" Load matchit.vim, but only if the user hasn't installed a newer version.
+if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
+  runtime! macros/matchit.vim
+endif
 
 call plug#begin('~/.vim/plugged')
 
-Plug 'vim-airline/vim-airline'             " Nice status lines
-Plug 'ntpeters/vim-better-whitespace'      " Deal with trailing white spaces
-Plug 'tpope/vim-fugitive'                  " Fugitive, git for vim // vim for git
-Plug 'tpope/vim-surround'                  " Cool mappings I yet need to master.
-Plug 'tomtom/tcomment_vim'                 " Comment plugin
-Plug 'godlygeek/tabular'                   " Tabularize
+Plug 'vim-airline/vim-airline'           " Nice status lines
+Plug 'ntpeters/vim-better-whitespace'    " Deal with trailing white spaces
+Plug 'tpope/vim-fugitive'                " Fugitive, git for vim // vim for git
+Plug 'tomtom/tcomment_vim'               " Comment plugin
 Plug 'zivyangll/git-blame.vim'
 
-Plug 'hashivim/vim-terraform'              " Terraform autoformat
-Plug 'pangloss/vim-javascript'             " JavaScript Syntax Highlighting
-Plug 'bumaociyuan/vim-swift'               " Swift Syntax Highlighting
-Plug 'posva/vim-vue'                       " Vue Syntax Highlighting
+Plug 'hashivim/vim-terraform'            " Terraform autoformat
+Plug 'posva/vim-vue'                     " Vue Syntax Highlighting
 Plug 'hail2u/vim-css3-syntax'
 
 
 if executable('ag')
-	Plug 'mileszs/ack.vim'             " Search inside files
+	Plug 'mileszs/ack.vim'           " Search inside files
 endif
 
 
 Plug 'ctrlpvim/ctrlp.vim'          " Fuzzy search
+Plug 'dense-analysis/ale'          " Linter
 
 call plug#end()
 
@@ -129,6 +185,36 @@ call plug#end()
 " -  -  -  -
 " Plugins configuration area.
 "
+
+"
+" Ale - Asynchronous Lint Engine
+" -----------
+"
+let g:ale_lint_on_insert_leave = 1
+let g:ale_lint_on_save = 1
+let g:ale_fix_on_save = 1
+
+let g:ale_linters = {}
+let g:ale_fixers = {}
+
+let g:ale_fixers.ruby = ['rubocop']
+let g:ale_linters.ruby = ['rubocop']
+
+let g:ale_linters.python = ['flake8']
+let g:ale_fixers.python = ['black']
+let g:ale_python_flake8_options = '--max-line-length=88'
+
+let g:ale_fixers.yaml = ['prettier']
+let g:ale_linters.yaml = ['yamllint']
+
+let g:ale_json_jq_options = '-S'
+let g:ale_fixers.json = ['prettier']
+
+let g:ale_fixers.scss = ['prettier']
+let g:ale_fixers.html = ['prettier']
+
+nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+nmap <silent> <C-j> <Plug>(ale_next_wrap)
 
 " git-blame.vim
 " --------------
@@ -146,6 +232,7 @@ let g:terraform_fmt_on_save=0
 " vim-better-whitespace
 " ---------------------
 "
+highlight ExtraWhitespace ctermbg=White
 let g:strip_whitelines_at_eof=1            " Remove empty lines at the end of file
 let g:strip_whitespace_on_save=1           " Remove trailing white spaces on save
 let g:strip_whitespace_confirm=0           " strip without asking
@@ -169,7 +256,7 @@ let g:airline#extensions#tabline#fnamemod = ':t'   " Show just the filename.
 let g:airline#extensions#tabline#buffer_nr_show = 1
 
 if !exists('g:airline_symbols')
-	let g:airline_symbols = {}
+    let g:airline_symbols = {}
 endif
 
 let g:airline_left_sep           = '»'
@@ -191,11 +278,12 @@ let g:airline_symbols.whitespace = 'Ξ'
 " Ack.vim
 " ----
 if executable('ag')
-	let g:ackprg = 'ag --ignore .git
-			\ --ignore "**/*.pyc"
-	                \ --ignore node_modules
-	                \ --ignore *.o
-	                \ --ignore *.swp --vimgrep'
+    let g:ackprg = 'ag --ignore .git
+            \ --ignore "**/*.pyc"
+            \ --ignore node_modules
+            \ --ignore node_modules.nosync
+            \ --ignore *.o
+            \ --ignore *.swp --vimgrep'
 endif
 
 
@@ -203,18 +291,21 @@ endif
 " CtrlP
 " ------
 
+let g:ctrlp_tabpage_position = 'ac' " Put the tab after the current one
+
 if executable('ag')
-	let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
-				\ --ignore .git
-				\ --ignore .svn
-				\ --ignore .hg
-				\ --ignore .keep
-				\ --ignore node_modules
-				\ --ignore .DS_Store
-				\ --ignore "**/*.pyc"
-				\ --ignore *.o
-				\ --ignore *.swp
-				\ -g ""'
+    let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
+                \ --ignore .git
+                \ --ignore .svn
+                \ --ignore .hg
+                \ --ignore .keep
+                \ --ignore node_modules
+                \ --ignore node_modules.nosync
+                \ --ignore .DS_Store
+                \ --ignore "**/*.pyc"
+                \ --ignore *.o
+                \ --ignore *.swp
+                \ -g ""'
 else
 	let g:ctrlp_custom_ignore = '\v[\/](node_modules|target|dist|DS_Store)|(\.(swp|ico|git|svn))$'
 endif
